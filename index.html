@@ -1,0 +1,1528 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>سياسة الخصوصية — تحدي الـ60 ثانية</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Rajdhani:wght@500;600;700&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-deep:    #050A14;
+  --bg-panel:   #0D1520;
+  --bg-surface: #111D2E;
+  --bg-card:    #111827;
+
+  --cyan:       #00F5FF;
+  --cyan-dim:   #00C8D4;
+  --electric:   #0066FF;
+  --gold:       #FFD700;
+  --amber:      #FF9F1C;
+  --magenta:    #FF00AA;
+  --purple:     #9B00FF;
+  --red:        #FF2244;
+  --orange:     #FF6600;
+  --green:      #00FF88;
+  --teal:       #00CCAA;
+
+  --border-dim:  #1E2D45;
+  --border-glow: #2AF4FF;
+  --accent-cyan: #2AF4FF;
+  --accent-gold: #FFD460;
+  --accent-red:  #FF3C5C;
+  --accent-green:#00FF9C;
+  --accent-purple:#B06DFF;
+
+  --text-primary:   #EEF4FF;
+  --text-secondary: #7A9CC0;
+  --text-disabled:  #2E4060;
+}
+
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Cairo', sans-serif;
+  background: var(--bg-deep);
+  color: var(--text-primary);
+  min-height: 100vh;
+  line-height: 1.8;
+  overflow-x: hidden;
+}
+
+/* ─── SCANLINE OVERLAY ─────────────────────────────────── */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0,245,255,0.015) 2px,
+    rgba(0,245,255,0.015) 4px
+  );
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* ─── ANIMATED GRID BG ──────────────────────────────────── */
+.grid-bg {
+  position: fixed; inset: 0;
+  background-image:
+    linear-gradient(rgba(0,245,255,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,245,255,0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+  animation: gridShift 20s linear infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+@keyframes gridShift {
+  from { background-position: 0 0; }
+  to   { background-position: 60px 60px; }
+}
+
+
+
+
+
+/* ─── HEADER ─────────────────────────────────────────────── */
+.header {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  overflow: hidden;
+}
+
+.header-inner {
+  background: linear-gradient(160deg, #0D1F3C 0%, #050A14 50%, #0A0D1A 100%);
+  border-bottom: 2px solid var(--cyan);
+  padding: 60px 24px 80px;
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+}
+.header-inner::before {
+  content: '';
+  position: absolute;
+  top: -80px; left: 50%;
+  transform: translateX(-50%);
+  width: 500px; height: 300px;
+  background: radial-gradient(ellipse, rgba(0,245,255,0.18) 0%, transparent 70%);
+  pointer-events: none;
+}
+.header-inner::after {
+  content: '';
+  position: absolute;
+  bottom: -60px; right: -60px;
+  width: 300px; height: 300px;
+  background: radial-gradient(circle, rgba(255,215,0,0.1) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.header h1 {
+  font-family: 'Orbitron', monospace;
+  font-size: clamp(1.3rem, 4vw, 2.2rem);
+  font-weight: 900;
+  color: var(--text-primary);
+  text-shadow: 0 0 20px rgba(0,245,255,0.5);
+  letter-spacing: 1px;
+  margin-bottom: 10px;
+  position: relative; z-index: 1;
+  text-align: center;
+}
+.header h1 span { color: var(--cyan); }
+
+.header-sub {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  position: relative; z-index: 1;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.header-date {
+  font-family: 'Orbitron', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 2px;
+  color: rgba(255,215,0,0.6);
+  margin-top: 8px;
+  position: relative; z-index: 1;
+  text-align: center;
+}
+
+.header-divider {
+  width: 200px; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--cyan), var(--gold), var(--cyan), transparent);
+  margin: 16px auto 0;
+  position: relative; z-index: 1;
+}
+
+/* ─── LANGUAGE BAR ───────────────────────────────────────── */
+.lang-bar {
+  position: sticky; top: 0; z-index: 200;
+  background: rgba(5,10,20,0.95);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border-dim);
+  padding: 12px 24px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  box-shadow: 0 4px 30px rgba(0,245,255,0.08);
+}
+
+.lang-btn {
+  font-family: 'Cairo', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 700;
+  padding: 8px 28px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  letter-spacing: 0.5px;
+  position: relative;
+  overflow: hidden;
+}
+.lang-btn::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(0,245,255,0.1), transparent);
+  opacity: 0;
+  transition: opacity 0.25s;
+}
+.lang-btn:hover::before { opacity: 1; }
+
+.lang-btn.inactive {
+  background: transparent;
+  border: 1px solid var(--border-dim);
+  color: var(--text-secondary);
+}
+.lang-btn.inactive:hover {
+  border-color: var(--cyan);
+  color: var(--cyan);
+}
+.lang-btn.active {
+  background: transparent;
+  border: 1px solid var(--cyan);
+  color: var(--cyan);
+  box-shadow: 0 0 16px rgba(0,245,255,0.3), inset 0 0 16px rgba(0,245,255,0.05);
+  text-shadow: 0 0 10px rgba(0,245,255,0.6);
+}
+
+/* ─── MAIN LAYOUT ────────────────────────────────────────── */
+.main {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px 20px 80px;
+  position: relative;
+  z-index: 10;
+}
+
+/* ─── HUD PANEL (Table of Contents) ─────────────────────── */
+.toc-card {
+  background: var(--bg-panel);
+  border: 1px solid var(--border-dim);
+  border-top: 2px solid var(--cyan);
+  border-radius: 0 0 8px 8px;
+  padding: 28px 32px;
+  margin-bottom: 24px;
+  position: relative;
+  overflow: hidden;
+}
+.toc-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+  box-shadow: 0 0 20px var(--cyan);
+}
+.toc-card::after {
+  content: '';
+  position: absolute;
+  top: -80px; right: -80px;
+  width: 200px; height: 200px;
+  background: radial-gradient(circle, rgba(0,245,255,0.05), transparent 70%);
+  pointer-events: none;
+}
+
+.toc-title {
+  font-family: 'Orbitron', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 3px;
+  color: var(--cyan);
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  display: flex; align-items: center; gap: 10px;
+}
+.toc-title::after {
+  content: '';
+  flex: 1; height: 1px;
+  background: linear-gradient(90deg, var(--border-dim), transparent);
+}
+
+.toc-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.toc-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 14px;
+  border: 1px solid var(--border-dim);
+  border-radius: 4px;
+  text-decoration: none;
+  color: var(--text-secondary);
+  font-size: 0.86rem;
+  font-weight: 600;
+  transition: all 0.2s;
+  background: rgba(255,255,255,0.01);
+}
+.toc-item:hover {
+  border-color: var(--cyan);
+  color: var(--cyan);
+  background: rgba(0,245,255,0.05);
+  box-shadow: 0 0 12px rgba(0,245,255,0.1);
+  transform: translateX(-2px);
+}
+html[dir="ltr"] .toc-item:hover { transform: translateX(2px); }
+
+.toc-num {
+  font-family: 'Orbitron', monospace;
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--cyan);
+  width: 22px; height: 22px;
+  border: 1px solid rgba(0,245,255,0.4);
+  border-radius: 3px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  background: rgba(0,245,255,0.06);
+}
+
+/* ─── SECTION CARDS ──────────────────────────────────────── */
+.section-card {
+  background: var(--bg-panel);
+  border: 1px solid var(--border-dim);
+  border-radius: 8px;
+  margin-bottom: 16px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+.section-card:hover {
+  border-color: rgba(0,245,255,0.3);
+  box-shadow: 0 0 30px rgba(0,245,255,0.07);
+}
+
+/* Clipped top-left corner effect */
+.section-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 0; height: 0;
+  border-style: solid;
+  border-width: 18px 18px 0 0;
+  border-color: var(--bg-deep) transparent transparent transparent;
+  z-index: 2;
+}
+html[dir="ltr"] .section-card::before {
+  left: auto; right: 0;
+  border-width: 18px 0 0 18px;
+  border-color: var(--bg-deep) transparent transparent transparent;
+}
+
+.section-card::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, var(--accent-color, var(--cyan)), transparent);
+  opacity: 0.7;
+}
+
+.card-body { padding: 28px 32px; }
+
+.section-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border-dim);
+}
+
+.section-icon-wrap {
+  width: 4px;
+  align-self: stretch;
+  border-radius: 4px;
+  flex-shrink: 0;
+  position: relative;
+}
+.section-icon-wrap::after {
+  content: none;
+}
+
+/* Icon color variants */
+.ic-cyan    { background: var(--cyan);    box-shadow: 0 0 12px var(--cyan);    }
+
+.ic-gold    { background: var(--gold);    box-shadow: 0 0 12px var(--gold);    }
+
+.ic-green   { background: var(--green);   box-shadow: 0 0 12px var(--green);   }
+
+.ic-purple  { background: var(--purple);  box-shadow: 0 0 12px var(--purple);  }
+
+.ic-red     { background: var(--red);     box-shadow: 0 0 12px var(--red);     }
+
+.ic-magenta { background: var(--magenta); box-shadow: 0 0 12px var(--magenta); }
+
+.ic-orange  { background: var(--orange);  box-shadow: 0 0 12px var(--orange);  }
+
+.ic-teal    { background: var(--teal);    box-shadow: 0 0 12px var(--teal);    }
+
+.ic-amber   { background: var(--amber);   box-shadow: 0 0 12px var(--amber);   }
+
+
+.section-meta { flex: 1; }
+.section-num {
+  font-family: 'Orbitron', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 2px;
+  color: rgba(0,245,255,0.45);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.section-title {
+  font-family: 'Cairo', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 900;
+  color: var(--text-primary);
+}
+
+/* ─── TYPOGRAPHY INSIDE CARDS ────────────────────────────── */
+p {
+  color: var(--text-secondary);
+  font-size: 0.93rem;
+  margin-bottom: 12px;
+  line-height: 1.9;
+}
+p strong { color: var(--text-primary); }
+
+h3 {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--cyan);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin: 22px 0 12px;
+  display: flex; align-items: center; gap: 8px;
+}
+h3::before {
+  content: '';
+  width: 3px; height: 14px;
+  background: var(--cyan);
+  border-radius: 2px;
+  box-shadow: 0 0 8px var(--cyan);
+  flex-shrink: 0;
+}
+
+/* ─── DATA LISTS ─────────────────────────────────────────── */
+.data-list { list-style: none; margin-bottom: 16px; }
+.data-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 10px 14px;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid var(--border-dim);
+  border-radius: 4px;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin-bottom: 5px;
+  transition: all 0.2s;
+  position: relative;
+}
+.data-list li::before {
+  content: '▸';
+  color: var(--cyan);
+  font-size: 0.75rem;
+  flex-shrink: 0;
+  margin-top: 3px;
+  text-shadow: 0 0 8px var(--cyan);
+}
+.data-list li:hover {
+  border-color: rgba(0,245,255,0.25);
+  background: rgba(0,245,255,0.03);
+  color: var(--text-primary);
+}
+
+/* ─── INFO BOXES ─────────────────────────────────────────── */
+.info-box {
+  border-radius: 4px;
+  padding: 14px 18px;
+  margin: 14px 0;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  font-size: 0.88rem;
+  line-height: 1.7;
+  border-width: 1px;
+  border-style: solid;
+  position: relative;
+  overflow: hidden;
+}
+.info-box::before {
+  content: '';
+  position: absolute; top: 0; left: 0;
+  width: 3px; height: 100%;
+}
+.info-box.cyan  {
+  background: rgba(0,245,255,0.05);
+  border-color: rgba(0,245,255,0.2);
+  color: var(--cyan-dim);
+}
+.info-box.cyan::before  { background: var(--cyan); box-shadow: 0 0 10px var(--cyan); }
+.info-box.amber {
+  background: rgba(255,159,28,0.05);
+  border-color: rgba(255,159,28,0.25);
+  color: #FFB347;
+}
+.info-box.amber::before { background: var(--amber); box-shadow: 0 0 10px var(--amber); }
+.info-box.green {
+  background: rgba(0,255,136,0.05);
+  border-color: rgba(0,255,136,0.2);
+  color: var(--accent-green);
+}
+.info-box.green::before { background: var(--green); box-shadow: 0 0 10px var(--green); }
+.info-box.red {
+  background: rgba(255,34,68,0.05);
+  border-color: rgba(255,34,68,0.2);
+  color: #FF6680;
+}
+.info-box.red::before   { background: var(--red); box-shadow: 0 0 10px var(--red); }
+
+
+
+/* ─── RIGHTS GRID ────────────────────────────────────────── */
+.rights-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 12px;
+}
+.right-card {
+  background: rgba(0,245,255,0.04);
+  border: 1px solid rgba(0,245,255,0.2);
+  border-radius: 6px;
+  padding: 18px 16px;
+  transition: all 0.25s;
+  position: relative;
+  overflow: hidden;
+}
+.right-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+  opacity: 0;
+  transition: opacity 0.25s;
+}
+.right-card:hover {
+  border-color: rgba(0,245,255,0.3);
+  background: rgba(0,245,255,0.04);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0,245,255,0.08);
+}
+.right-card:hover::before { opacity: 1; }
+
+
+.right-card-title {
+  font-weight: 700;
+  font-size: 0.92rem;
+  color: var(--cyan);
+  margin-bottom: 6px;
+  font-family: 'Rajdhani', sans-serif;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+.right-card-desc {
+  font-size: 0.84rem;
+  color: var(--text-primary);
+  line-height: 1.6;
+}
+
+/* ─── PARTNER CHIPS ──────────────────────────────────────── */
+.partner-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 14px;
+  border-radius: 3px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  margin: 4px 4px 4px 0;
+  font-family: 'Rajdhani', sans-serif;
+  letter-spacing: 0.5px;
+  transition: all 0.2s;
+}
+.chip-cyan {
+  background: rgba(0,245,255,0.08);
+  border: 1px solid rgba(0,245,255,0.4);
+  color: var(--cyan);
+}
+.chip-teal {
+  background: rgba(0,204,170,0.08);
+  border: 1px solid rgba(0,204,170,0.4);
+  color: var(--teal);
+}
+.chip-green {
+  background: rgba(0,255,136,0.08);
+  border: 1px solid rgba(0,255,136,0.4);
+  color: var(--green);
+}
+.chip-gold {
+  background: rgba(255,215,0,0.08);
+  border: 1px solid rgba(255,215,0,0.4);
+  color: var(--gold);
+}
+.partner-chip:hover { transform: translateY(-1px); }
+
+/* ─── CONTACT CARD ───────────────────────────────────────── */
+.contact-card {
+  background: linear-gradient(135deg, #0A1628 0%, #05100F 50%, #0D0A1A 100%);
+  border: 1px solid rgba(0,245,255,0.3);
+  border-radius: 8px;
+  padding: 32px 36px;
+  margin-bottom: 16px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 40px rgba(0,245,255,0.08);
+}
+.contact-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, var(--cyan), var(--gold), var(--magenta), var(--cyan));
+  background-size: 200% 100%;
+  animation: shimmer 4s linear infinite;
+}
+@keyframes shimmer {
+  from { background-position: 0% 0; }
+  to   { background-position: 200% 0; }
+}
+.contact-card::after {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 400px; height: 200px;
+  background: radial-gradient(ellipse, rgba(0,245,255,0.05), transparent 70%);
+  pointer-events: none;
+}
+
+.contact-card .section-title { color: var(--text-primary); }
+.contact-card p { color: var(--text-secondary); }
+
+.email-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(0,245,255,0.08);
+  border: 1px solid var(--cyan);
+  color: var(--cyan);
+  padding: 12px 28px;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.92rem;
+  margin-top: 14px;
+  transition: all 0.25s;
+  font-family: 'Rajdhani', sans-serif;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  position: relative; z-index: 1;
+  box-shadow: 0 0 20px rgba(0,245,255,0.1);
+}
+.email-link:hover {
+  background: rgba(0,245,255,0.15);
+  box-shadow: 0 0 30px rgba(0,245,255,0.25);
+  transform: translateY(-2px);
+}
+
+.contact-section-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(0,245,255,0.15);
+}
+
+/* ─── FOOTER ─────────────────────────────────────────────── */
+.footer {
+  text-align: center;
+  padding: 24px;
+  color: var(--text-disabled);
+  font-size: 0.78rem;
+  letter-spacing: 1px;
+  font-family: 'Rajdhani', sans-serif;
+}
+.footer span { color: var(--cyan); opacity: 0.5; }
+
+/* ─── LINKS ──────────────────────────────────────────────── */
+a { color: var(--cyan); text-decoration: none; transition: color 0.2s; }
+a:hover { color: var(--accent-gold); text-decoration: underline; }
+
+/* ─── SECTION COLOR ACCENTS via data attrs ───────────────── */
+[data-accent="cyan"]    .section-card::after { background: linear-gradient(90deg, var(--cyan), transparent); }
+[data-accent="purple"]  .section-card::after { background: linear-gradient(90deg, var(--purple), transparent); }
+[data-accent="teal"]    .section-card::after { background: linear-gradient(90deg, var(--teal), transparent); }
+[data-accent="amber"]   .section-card::after { background: linear-gradient(90deg, var(--amber), transparent); }
+[data-accent="green"]   .section-card::after { background: linear-gradient(90deg, var(--green), transparent); }
+[data-accent="red"]     .section-card::after { background: linear-gradient(90deg, var(--red), transparent); }
+[data-accent="pink"]    .section-card::after { background: linear-gradient(90deg, var(--magenta), transparent); }
+[data-accent="orange"]  .section-card::after { background: linear-gradient(90deg, var(--orange), transparent); }
+[data-accent="gold"]    .section-card::after { background: linear-gradient(90deg, var(--gold), transparent); }
+
+/* ─── RTL/LTR ────────────────────────────────────────────── */
+html[dir="ltr"] .section-card::after {
+  background: linear-gradient(270deg, var(--accent-color, var(--cyan)), transparent);
+}
+html[dir="ltr"] h3::before { margin-left: 0; }
+html[dir="ltr"] .info-box::before { left: 0; right: auto; }
+html[dir="ltr"] .toc-item:hover { transform: translateX(2px); }
+
+/* ─── RESPONSIVE ─────────────────────────────────────────── */
+@media (max-width: 640px) {
+  .header h1 { font-size: 1.1rem; }
+  .main { padding: 24px 12px 60px; }
+  .card-body { padding: 20px 16px; }
+  .toc-grid { grid-template-columns: 1fr; }
+  .rights-grid { grid-template-columns: 1fr; }
+  .contact-card { padding: 22px 16px; }
+  .toc-card { padding: 20px 16px; }
+}
+
+/* ─── ENTRY ANIMATION ────────────────────────────────────── */
+.section-card, .toc-card, .contact-card {
+  animation: fadeUp 0.4s ease both;
+}
+.section-card:nth-child(2)  { animation-delay: 0.05s; }
+.section-card:nth-child(3)  { animation-delay: 0.10s; }
+.section-card:nth-child(4)  { animation-delay: 0.15s; }
+.section-card:nth-child(5)  { animation-delay: 0.20s; }
+.section-card:nth-child(6)  { animation-delay: 0.25s; }
+.section-card:nth-child(7)  { animation-delay: 0.30s; }
+.section-card:nth-child(8)  { animation-delay: 0.35s; }
+.section-card:nth-child(9)  { animation-delay: 0.40s; }
+.section-card:nth-child(10) { animation-delay: 0.45s; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+</style>
+</head>
+<body>
+
+<div class="grid-bg"></div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!--  HEADER                                                 -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="header">
+  <div class="header-inner">
+    
+        <h1 id="main-title">سياسة الخصوصية<br><span>تحدي الـ60 ثانية</span></h1>
+    <p class="header-sub" id="main-subtitle">نحن نحترم بياناتك ونلتزم بحمايتها</p>
+    <p class="header-date" id="main-badge">آخر تحديث: مايو 2026</p>
+    <div class="header-divider"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!--  LANGUAGE BAR                                           -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="lang-bar">
+  <button class="lang-btn active" id="ar-btn" onclick="showArabic()">🇮🇶 العربية</button>
+  <button class="lang-btn inactive" id="en-btn" onclick="showEnglish()">🇬🇧 English</button>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!--  MAIN CONTENT                                           -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="main">
+
+  <!-- ╔══════════════════════════════════════╗ -->
+  <!-- ║  ARABIC CONTENT                      ║ -->
+  <!-- ╚══════════════════════════════════════╝ -->
+  <div id="ar-content">
+
+    <!-- TOC -->
+    <div class="toc-card">
+      <div class="toc-title">📋 محتويات السياسة</div>
+      <div class="toc-grid">
+        <a href="#ar-1"  class="toc-item"><span class="toc-num">1</span> مقدمة</a>
+        <a href="#ar-2"  class="toc-item"><span class="toc-num">2</span> البيانات التي نجمعها</a>
+        <a href="#ar-3"  class="toc-item"><span class="toc-num">3</span> كيف نستخدم بياناتك</a>
+        <a href="#ar-4"  class="toc-item"><span class="toc-num">4</span> تخزين البيانات</a>
+        <a href="#ar-5"  class="toc-item"><span class="toc-num">5</span> مشاركة البيانات</a>
+                <a href="#ar-5b" class="toc-item"><span class="toc-num">5b</span> خدمات Firebase</a>
+        <a href="#ar-6"  class="toc-item"><span class="toc-num">6</span> أمان البيانات</a>
+        <a href="#ar-7"  class="toc-item"><span class="toc-num">7</span> حقوقك</a>
+        <a href="#ar-8"  class="toc-item"><span class="toc-num">8</span> حماية الأطفال</a>
+        <a href="#ar-9"  class="toc-item"><span class="toc-num">9</span> الإعلانات</a>
+        <a href="#ar-10" class="toc-item"><span class="toc-num">10</span> التغييرات</a>
+        <a href="#ar-11" class="toc-item"><span class="toc-num">11</span> تواصل معنا</a>
+      </div>
+    </div>
+
+    <!-- ── Section 1: مقدمة ── -->
+    <div id="ar-1">
+    <div class="section-card" style="--accent-color: var(--cyan);">
+      <div class="card-body">
+        <div class="section-header">
+          <div class="section-icon-wrap ic-cyan"></div>
+          <div class="section-meta">
+            <div class="section-num">القسم 01 // INTRO</div>
+            <div class="section-title">مقدمة</div>
+          </div>
+        </div>
+        <p>يلتزم تطبيق <strong>"تحدي الـ60 ثانية"</strong> بحماية خصوصيتك وبياناتك الشخصية. تُوضّح هذه السياسة بشكل شفاف ما هي البيانات التي نجمعها، ولماذا نجمعها، وكيف نحميها عند استخدامك للتطبيق على نظام Android.</p>
+        <p>باستخدامك للتطبيق، فإنك توافق على الشروط الواردة في هذه السياسة. إذا كنت لا توافق على أي بند، يُرجى التوقف عن استخدام التطبيق.</p>
+        <div class="info-box cyan">
+          <span>هذه السياسة مكتوبة باللغتين العربية والإنجليزية. في حال وجود أي تعارض بين النسختين، تُعتمد النسخة العربية مرجعاً رئيسياً.</span>
+        </div>
+      </div>
+    </div>
+    </div>
+
+    <!-- ── Section 2: البيانات ── -->
+    <div id="ar-2">
+    <div class="section-card" style="--accent-color: var(--purple);">
+      <div class="card-body">
+        <div class="section-header">
+          <div class="section-icon-wrap ic-purple"></div>
+          <div class="section-meta">
+            <div class="section-num">القسم 02 // DATA</div>
+            <div class="section-title">البيانات التي نجمعها</div>
+          </div>
+        </div>
+        <p>نجمع الحد الأدنى الضروري من البيانات لتقديم تجربة لعب سليمة ومخصصة.</p>
+
+        <h3>2.1 — بيانات الحساب</h3>
+        <ul class="data-list">
+          <li>البريد الإلكتروني (عبر تسجيل الدخول بحساب Google)</li>
+          <li>اسم العرض (من حساب Google)</li>
+          <li>معرف المستخدم الفريد (User ID)</li>
+        </ul>
+
+        <h3>2.2 — بيانات الملف الشخصي</h3>
+        <ul class="data-list">
+          <li>الفئة العمرية: أطفال (10–13)، مراهقون (14–17)، بالغون (18–24)، (25+)</li>
+          <li>الجنس</li>
+          <li>اسم الصورة الرمزية المختارة</li>
+        </ul>
+
+        <h3>2.3 — بيانات تقدم اللعبة</h3>
+        <ul class="data-list">
+          <li>المستوى الحالي ونقاط الخبرة (XP)</li>
+          <li>إجمالي النقاط والعملات</li>
+          <li>التتابع الحالي (Streak)</li>
+          <li>الأقسام المكتملة والمستويات المفتوحة</li>
+          <li>أفضل النتائج لكل قسم</li>
+          <li>رتب الإنجاز</li>
+        </ul>
+
+        <h3>2.4 — بيانات الإعلانات</h3>
+        <ul class="data-list">
+          <li>معرّف الإعلانات الخاص بالجهاز (Advertising ID) — لأغراض عرض إعلانات ملائمة فقط</li>
+          <li>بيانات تفاعل الإعلانات (النقر، المشاهدة)</li>
+        </ul>
+
+        <div class="info-box green">
+          <span><strong>ما لا نجمعه:</strong> لا نجمع بيانات الموقع الجغرافي، ولا معلومات الدفع، ولا محتوى الرسائل، ولا أي بيانات حساسة أخرى.</span>
+        </div>
+      </div>
+    </div>
+    </div>
+
+    <!-- ── Section 3: الاستخدام ── -->
+    <div id="ar-3">
+    <div class="section-card" style="--accent-color: var(--teal);">
+      <div class="card-body">
+        <div class="section-header">
+          <div class="section-icon-wrap ic-teal"></div>
+          <div class="section-meta">
+            <div class="section-num">القسم 03 // USAGE</div>
+            <div class="section-title">كيف نستخدم بياناتك</div>
+          </div>
+        </div>
+        <ul class="data-list">
+          <li>توفير تجربة لعب مخصصة بحسب الفئة العمرية</li>
+          <li>حفظ تقدمك في اللعبة ومزامنته عبر الأجهزة</li>
+          <li>ضبط مستوى صعوبة الأسئلة بناءً على أدائك</li>
+          <li>عرض إعلانات مناسبة لدعم التطبيق مجانياً</li>
+          <li>تحليل أداء التطبيق لتحسين جودته</li>
+          <li>منع الاحتيال وضمان عدالة اللعبة</li>
+          <li>التحقق من هويتك عند تسجيل الدخول</li>
+        </ul>
+        <div class="info-box amber">
+          <span>لا نستخدم بياناتك لأغراض تجارية خارجة عن تشغيل التطبيق، ولا نبيع بياناتك لأي طرف ثالث.</span>
+        </div>
+      </div>
+    </div>
+    </div>
+
+    <!-- ── Section 4: التخزين ── -->
+    <div id="ar-4">
+    <div class="section-card" style="--accent-color: var(--electric);">
+      <div class="card-body">
+        <div class="section-header">
+          <div class="section-icon-wrap ic-cyan"></div>
+          <div class="section-meta">
+            <div class="section-num">القسم 04 // STORAGE</div>
+            <div class="section-title">تخزين البيانات</div>
+          </div>
+        </div>
+        <p>يتم تخزين بيانات اللعبة الخاصة بك بأسلوبين متكاملين:</p>
+
+        <h3>4.1 — التخزين المحلي على الجهاز</h3>
+        <p>يُحفظ جزء من بيانات اللعبة مباشرةً على جهازك لضمان سرعة الاستجابة وإمكانية الاستخدام دون اتصال بالإنترنت.</p>
+
+        <h3>4.2 — التخزين السحابي عبر Supabase</h3>
+        <span class="partner-chip chip-green">Supabase</span>
+        <p style="margin-top:10px;">تُخزَّن جميع بيانات حسابك وتقدمك في اللعبة على منصة <strong>Supabase</strong>، وهي قاعدة بيانات سحابية آمنة ومشفرة. تتيح لك المزامنة الفورية بين الأجهزة واستمرارية تقدمك دون انقطاع. يرجى مراجعة <a href="https://supabase.com/privacy" target="_blank">سياسة خصوصية Supabase</a> للاطلاع على مزيد من التفاصيل.</p>
+
+        <div class="info-box cyan">
+          <span>يتم الاحتفاظ ببياناتك طالما كان حسابك نشطاً. عند حذف حسابك، يتم حذف جميع بياناتك من Supabase خلال مدة معقولة.</span>
+        </div>
+      </div>
+    </div>
+    </div>
+
+    <!-- ── Section 5: المشاركة ── -->
+    <div id="ar-5">
+    <div class="section-card" style="--accent-color: var(--amber);">
+      <div class="card-body">
+        <div class="section-header">
+          <div class="section-icon-wrap ic-amber"></div>
+          <div class="section-meta">
+            <div class="section-num">القسم 05 // SHARING</div>
+            <div class="section-title">مشاركة البيانات مع أطراف ثالثة</div>
+          </div>
+        </div>
+        <p>نشارك بيانات محدودة فقط مع مزوّدي الخدمات التاليين لتشغيل التطبيق:</p>
+
+        <h3>5.1 — خدمة المصادقة</h3>
+        <span class="partner-chip chip-cyan">Google Sign-In</span>
+        <p style="margin-top:10px;">نستخدم Google Sign-In للتحقق من هويتك فقط. يرجى مراجعة <a href="https://policies.google.com/privacy" target="_blank">سياسة خصوصية Google</a> للاطلاع على تفاصيل معالجتهم لبياناتك.</p>
+
+        <h3>5.2 — قاعدة البيانات السحابية</h3>
+        <span class="partner-chip chip-green">Supabase</span>
+        <p style="margin-top:10px;">تُخزَّن بيانات حسابك وتقدمك في اللعبة على منصة Supabase. راجع <a href="https://supabase.com/privacy" target="_blank">سياسة خصوصية Supabase</a>.</p>
+
+        <h3>5.3 — خدمات الإعلانات</h3>
+        <span class="partner-chip chip-teal">Unity Ads</span>
+        <span class="partner-chip chip-gold">Google AdMob</span>
+        <p style="margin-top:10px;">نستخدم هذه الشبكات لعرض الإعلانات داخل التطبيق. قد تجمع معرّف الإعلانات ومعلومات الجهاز لعرض إعلانات ذات صلة.</p>
+
+        <div class="info-box red">
+          <span>لا نبيع بياناتك لأي طرف ثالث، ولا نشاركها مع أي جهة خارج ما ذُكر أعلاه.</span>
+        </div>
+      </div>
+    </div>
+    </div>
+
+
+    <!-- ── Section 5b: Firebase ── -->
+    <div id="ar-5b">
+    <div class="section-card" style="--accent-color: var(--orange);">
+      <div class="card-body">
+        <div class="section-header">
+          <div class="section-icon-wrap ic-orange"></div>
+          <div class="section-meta">
+            <div class="section-num">القسم 05B // FIREBASE</div>
+            <div class="section-title">خدمات Firebase</div>
+          </div>
+        </div>
+        <p>نستخدم مجموعة من خدمات Firebase المقدمة من Google لأغراض <strong>التحليل والأداء والإشعارات فقط</strong> — ولا تُستخدم لتخزين بيانات اللعبة (التي تُخزَّن في Supabase).</p>
+
+        <h3>Firebase Analytics</h3>
+        <p>تتبع أحداث اللعب وسلوك المستخدم لفهم كيفية استخدام التطبيق وتحسينه. لا تُستخدم البيانات لأغراض إعلانية مخصصة.</p>
+
+        <h3>Firebase Crashlytics</h3>
+        <p>رصد الأعطال والأخطاء التقنية تلقائياً لضمان استقرار التطبيق وإصلاح المشكلات بسرعة.</p>
+
+        <h3>Firebase Cloud Messaging</h3>
+        <p>إرسال الإشعارات الفورية المتعلقة باللعبة، مثل تذكيرات التتابع اليومي وإشعارات التحديثات.</p>
+
+        <h3>Firebase Remote Config</h3>
+        <p>ضبط إعدادات التطبيق ومحتواه عن بُعد دون الحاجة إلى تحديث التطبيق بالكامل.</p>
+
+        <div class="info-box cyan">
+          <span>جميع خدمات Firebase تخضع لسياسة خصوصية Google. لمزيد من التفاصيل: <a href="https://firebase.google.com/support/privacy" target="_blank">سياسة خصوصية Firebase</a></span>
+        </div>
+      </div>
+    </div>
+    </div>
+
+    <!-- ── Section 6: الأمان ── -->
+    <div id="ar-6">
+    <div class="section-card" style="--accent-color: var(--green);">
+      <div class="card-body">
+        <div class="section-header">
+          <div class="section-icon-wrap ic-green"></div>
+          <div class="section-meta">
+            <div class="section-num">القسم 06 // SECURITY</div>
+            <div class="section-title">أمان البيانات</div>
+          </div>
+        </div>
+        <p>نتخذ تدابير أمنية معقولة لحماية بياناتك، تشمل:</p>
+        <ul class="data-list">
+          <li>تشفير البيانات أثناء النقل عبر بروتوكول HTTPS</li>
+          <li>التحكم الصارم في صلاحيات الوصول إلى البيانات</li>
+          <li>مراجعة دورية لسياسات وإجراءات الأمان</li>
+          <li>حماية قاعدة البيانات بقواعد أمان مُحكمة على مستوى الخادم</li>
+        </ul>
+        <div class="info-box amber">
+          <span>لا يمكن لأي نظام ضمان أمان مطلق للبيانات المنقولة عبر الإنترنت. نحن نبذل جهدنا لحماية بياناتك، غير أن الأمان الكامل لا يمكن ضمانه بشكل تام.</span>
+        </div>
+      </div>
+    </div>
+    </div>
+
+    <!-- ── Section 7: الحقوق ── -->
+    <div id="ar-7">
+    <div class="section-card" style="--accent-color: var(--magenta);">
+      <div class="card-body">
+        <div class="section-header">
+          <div class="section-icon-wrap ic-magenta"></div>
+          <div class="section-meta">
+            <div class="section-num">القسم 07 // RIGHTS</div>
+            <div class="section-title">حقوقك كمستخدم</div>
+          </div>
+        </div>
+        <p>يحق لك ممارسة الحقوق التالية فيما يتعلق ببياناتك:</p>
+        <div class="rights-grid">
+          <div class="right-card">
+            
+            <div class="right-card-title">حق الاطلاع</div>
+            <div class="right-card-desc">يمكنك الاطلاع على البيانات المرتبطة بحسابك من خلال إعدادات التطبيق أو بالتواصل معنا.</div>
+          </div>
+          <div class="right-card">
+            
+            <div class="right-card-title">حق التصحيح</div>
+            <div class="right-card-desc">يمكنك تحديث بيانات ملفك الشخصي في أي وقت من خلال صفحة الإعدادات داخل التطبيق.</div>
+          </div>
+          <div class="right-card">
+            
+            <div class="right-card-title">حق الحذف</div>
+            <div class="right-card-desc">يمكنك حذف حسابك وجميع بياناتك بشكل نهائي من خلال زر "حذف الحساب" في صفحة الإعدادات.</div>
+          </div>
+          <div class="right-card">
+            
+            <div class="right-card-title">إيقاف تتبع الإعلانات</div>
+            <div class="right-card-desc">يمكنك إيقاف تتبع الإعلانات الشخصية من إعدادات الخصوصية في جهازك Android.</div>
+          </div>
+        </div>
+        <div class="info-box cyan" style="margin-top:16px;">
+          <span>لممارسة أي من هذه الحقوق أو لطلب نسخة من بياناتك، تواصل معنا على: <strong>mustfim11@gmail.com</strong></span>
+        </div>
+      </div>
+    </div>
+    </div>
+
+    <!-- ── Section 8: الأطفال ── -->
+    <div id="ar-8">
+    <div class="section-card" style="--accent-color: var(--gold);">
+      <div class="card-body">
+        <div class="section-header">
+          <div class="section-icon-wrap ic-gold"></div>
+          <div class="section-meta">
+            <div class="section-num">القسم 08 // CHILDREN</div>
+            <div class="section-title">حماية الأطفال</div>
+          </div>
+        </div>
+        <p>التطبيق مصمم للأطفال والمراهقين ابتداءً من سن <strong>10 سنوات</strong>. نحن نأخذ حماية خصوصية الأطفال بجدية بالغة ونلتزم بما يلي:</p>
+        <ul class="data-list">
+          <li>لا نجمع سوى الحد الأدنى الضروري من البيانات لتوفير تجربة لعب مناسبة للعمر</li>
+          <li>لا نجمع بيانات الموقع الجغرافي أو المعلومات الحساسة</li>
+          <li>لا نتيح أي وسائل تواصل أو دردشة بين المستخدمين داخل التطبيق</li>
+          <li>يتم تصفية محتوى الإعلانات لتكون مناسبة للفئات العمرية</li>
+          <li>لا نستخدم بيانات الأطفال لأغراض تسويقية</li>
+        </ul>
+        <div class="info-box amber">
+          <span>إذا كنت ولياً للأمر وتعتقد أن طفلك قدّم بيانات دون إذنك، يُرجى التواصل معنا فوراً على <strong>mustfim11@gmail.com</strong> وسنتخذ الإجراء المناسب.</span>
+        </div>
+      </div>
+    </div>
+    </div>
+
+    <!-- ── Section 9: الإعلانات ── -->
+    <div id="ar-9">
+    <div class="section-card" style="--accent-color: var(--orange);">
+      <div class="card-body">
+        <div class="section-header">
+          <div class="section-icon-wrap ic-orange"></div>
+          <div class="section-meta">
+            <div class="section-num">القسم 09 // ADS</div>
+            <div class="section-title">الإعلانات</div>
+          </div>
+        </div>
+        <p>يعتمد التطبيق على الإعلانات لتقديم خدمته مجاناً. تتم إدارة الإعلانات عبر شبكتَي Unity Ads وGoogle AdMob.</p>
+        <ul class="data-list">
+          <li>قد تستخدم شبكات الإعلانات معرّف الإعلانات الخاص بجهازك لعرض إعلانات ذات صلة باهتماماتك</li>
+          <li>يمكنك إعادة تعيين معرّف الإعلانات أو إيقاف تفعيله من إعدادات Google على جهازك</li>
+          <li>للأطفال دون 13 عاماً: يتم عرض إعلانات غير مخصصة تحترم الخصوصية (Non-personalized Ads)</li>
+        </ul>
+        <div class="info-box cyan">
+          <span>لمعرفة المزيد: <a href="https://policies.google.com/privacy" target="_blank">سياسة خصوصية Google</a> | <a href="https://unity.com/legal/privacy-policy" target="_blank">سياسة خصوصية Unity Ads</a></span>
+        </div>
+      </div>
+    </div>
+    </div>
+
+    <!-- ── Section 10: التغييرات ── -->
+    <div id="ar-10">
+    <div class="section-card" style="--accent-color: var(--teal);">
+      <div class="card-body">
+        <div class="section-header">
+          <div class="section-icon-wrap ic-teal"></div>
+          <div class="section-meta">
+            <div class="section-num">القسم 10 // UPDATES</div>
+            <div class="section-title">التغييرات على هذه السياسة</div>
+          </div>
+        </div>
+        <p>قد نقوم بتحديث هذه السياسة من وقت لآخر. في حال إجراء أي تغييرات جوهرية:</p>
+        <ul class="data-list">
+          <li>سيتم إشعارك عبر إشعار داخل التطبيق</li>
+          <li>سيتم تحديث تاريخ "آخر تحديث" في أعلى هذه الصفحة</li>
+          <li>استمرار استخدامك للتطبيق بعد الإشعار يُعدّ موافقةً على التغييرات</li>
+        </ul>
+      </div>
+    </div>
+    </div>
+
+    <!-- ── Section 11: تواصل ── -->
+    <div id="ar-11">
+    <div class="contact-card">
+      <div class="contact-section-header">
+        <div class="section-icon-wrap ic-cyan"></div>
+        <div class="section-meta">
+          <div class="section-num" style="color:rgba(0,245,255,0.4);">القسم 11 // CONTACT</div>
+          <div class="section-title">تواصل معنا</div>
+        </div>
+      </div>
+      <p>إذا كان لديك أي استفسار أو مخاوف بشأن هذه السياسة أو بياناتك، نرحب بتواصلك معنا في أي وقت:</p>
+      <a href="mailto:mustfim11@gmail.com" class="email-link">mustfim11@gmail.com</a>
+      <p style="margin-top:16px; font-size:0.82rem; color:rgba(122,156,192,0.7);">نلتزم بالرد على جميع استفساراتك خلال <strong style="color:var(--cyan);">30 يوماً</strong> من تاريخ استلامها.</p>
+    </div>
+    </div>
+
+  </div><!-- end #ar-content -->
+
+  <!-- ╔══════════════════════════════════════╗ -->
+  <!-- ║  ENGLISH CONTENT                     ║ -->
+  <!-- ╚══════════════════════════════════════╝ -->
+  <div id="en-content" style="display:none;" dir="ltr">
+
+    <!-- TOC -->
+    <div class="toc-card">
+      <div class="toc-title">📋 Table of Contents</div>
+      <div class="toc-grid">
+        <a href="#en-1"  class="toc-item"><span class="toc-num">1</span> Introduction</a>
+        <a href="#en-2"  class="toc-item"><span class="toc-num">2</span> Data We Collect</a>
+        <a href="#en-3"  class="toc-item"><span class="toc-num">3</span> How We Use Your Data</a>
+        <a href="#en-4"  class="toc-item"><span class="toc-num">4</span> Data Storage</a>
+        <a href="#en-5"  class="toc-item"><span class="toc-num">5</span> Data Sharing</a>
+                <a href="#en-5b" class="toc-item"><span class="toc-num">5b</span> Firebase Services</a>
+        <a href="#en-6"  class="toc-item"><span class="toc-num">6</span> Data Security</a>
+        <a href="#en-7"  class="toc-item"><span class="toc-num">7</span> Your Rights</a>
+        <a href="#en-8"  class="toc-item"><span class="toc-num">8</span> Children's Privacy</a>
+        <a href="#en-9"  class="toc-item"><span class="toc-num">9</span> Advertising</a>
+        <a href="#en-10" class="toc-item"><span class="toc-num">10</span> Policy Changes</a>
+        <a href="#en-11" class="toc-item"><span class="toc-num">11</span> Contact Us</a>
+      </div>
+    </div>
+
+    <!-- ── Section 1 ── -->
+    <div id="en-1">
+    <div class="section-card" style="--accent-color: var(--cyan);">
+      <div class="card-body">
+        <div class="section-header">
+          <div class="section-icon-wrap ic-cyan"></div>
+          <div class="section-meta">
+            <div class="section-num">SECTION 01 // INTRO</div>
+            <div class="section-title">Introduction</div>
+          </div>
+        </div>
+        <p><strong>"60 Second Challenge"</strong> is committed to protecting your privacy and personal data. This policy transparently explains what data we collect, why we collect it, and how we protect it when you use our application on Android.</p>
+        <p>By using the app, you agree to the terms of this policy. If you do not agree with any part, please stop using the application.</p>
+        <div class="info-box cyan">
+          <span>This policy is available in both Arabic and English. In case of any conflict between the two versions, the Arabic version shall be the primary reference.</span>
+        </div>
+      </div>
+    </div>
+    </div>
+
+    <!-- ── Section 2 ── -->
+    <div id="en-2">
+    <div class="section-card" style="--accent-color: var(--purple);">
+      <div class="card-body">
+        <div class="section-header">
+          <div class="section-icon-wrap ic-purple"></div>
+          <div class="section-meta">
+            <div class="section-num">SECTION 02 // DATA</div>
+            <div class="section-title">Data We Collect</div>
+          </div>
+        </div>
+        <p>We collect the minimum data necessary to provide a sound and personalized gaming experience.</p>
+
+        <h3>2.1 — Account Data</h3>
+        <ul class="data-list">
+          <li>Email address (via Google Sign-In)</li>
+          <li>Display name (from Google account)</li>
+          <li>Unique User ID</li>
+        </ul>
+
+        <h3>2.2 — Profile Data</h3>
+        <ul class="data-list">
+          <li>Age group: Kids (10–13), Teens (14–17), Adults (18–24), Adults (25+)</li>
+          <li>Gender</li>
+          <li>Selected avatar image name</li>
+        </ul>
+
+        <h3>2.3 — Game Progress Data</h3>
+        <ul class="data-list">
+          <li>Current level and experience points (XP)</li>
+          <li>Total score and coin balance</li>
+          <li>Current streak</li>
+          <li>Completed sections and unlocked levels</li>
+          <li>Best scores per section</li>
+          <li>Achievement titles</li>
+        </ul>
+
+        <h3>2.4 — Advertising Data</h3>
+        <ul class="data-list">
+          <li>Device Advertising ID — for the purpose of serving relevant ads only</li>
+          <li>Ad interaction data (clicks, views)</li>
+        </ul>
+
+        <div class="info-box green">
+          <span><strong>What we do NOT collect:</strong> We do not collect location data, payment information, message content, or any other sensitive data.</span>
+        </div>
+      </div>
+    </div>
+    </div>
+
+    <!-- ── Section 3 ── -->
+    <div id="en-3">
+    <div class="section-card" style="--accent-color: var(--teal);">
+      <div class="card-body">
+        <div class="section-header">
+          <div class="section-icon-wrap ic-teal"></div>
+          <div class="section-meta">
+            <div class="section-num">SECTION 03 // USAGE</div>
+            <div class="section-title">How We Use Your Data</div>
+          </div>
+        </div>
+        <ul class="data-list">
+          <li>Provide a personalized gaming experience based on age group</li>
+          <li>Save and sync your game progress across devices</li>
+          <li>Adjust question difficulty based on your performance</li>
+          <li>Display relevant ads to keep the app free</li>
+          <li>Analyze app performance and improve it</li>
+          <li>Prevent fraud and ensure fair gameplay</li>
+          <li>Verify your identity upon sign-in</li>
+        </ul>
+        <div class="info-box amber">
+          <span>We do not use your data for commercial purposes beyond operating the app, and we do not sell your data to any third party.</span>
+        </div>
+      </div>
+    </div>
+    </div>
+
+    <!-- ── Section 4 ── -->
+    <div id="en-4">
+    <div class="section-card" style="--accent-color: var(--electric);">
+      <div class="card-body">
+        <div class="section-header">
+          <div class="section-icon-wrap ic-cyan"></div>
+          <div class="section-meta">
+            <div class="section-num">SECTION 04 // STORAGE</div>
+            <div class="section-title">Data Storage</div>
+          </div>
+        </div>
+        <p>Your game data is stored using two complementary methods:</p>
+        <h3>4.1 — Local Device Storage</h3>
+        <p>Some game data is saved directly on your device for fast response and offline usability.</p>
+        <h3>4.2 — Cloud Storage via Supabase</h3>
+        <span class="partner-chip chip-green">Supabase</span>
+        <p style="margin-top:10px;">All account and game progress data is stored on <strong>Supabase</strong>, a secure and encrypted cloud database platform. This enables instant cross-device sync and uninterrupted game progress. Please review <a href="https://supabase.com/privacy" target="_blank">Supabase's Privacy Policy</a> for more details.</p>
+        <div class="info-box cyan">
+          <span>Your data is retained as long as your account is active. Upon account deletion, all your data will be permanently removed from Supabase within a reasonable timeframe.</span>
+        </div>
+      </div>
+    </div>
+    </div>
+
+    <!-- ── Section 5 ── -->
+    <div id="en-5">
+    <div class="section-card" style="--accent-color: var(--amber);">
+      <div class="card-body">
+        <div class="section-header">
+          <div class="section-icon-wrap ic-amber"></div>
+          <div class="section-meta">
+            <div class="section-num">SECTION 05 // SHARING</div>
+            <div class="section-title">Data Sharing with Third Parties</div>
+          </div>
+        </div>
+        <p>We share limited data only with the following service providers to operate the app:</p>
+        <h3>5.1 — Authentication Service</h3>
+        <span class="partner-chip chip-cyan">Google Sign-In</span>
+        <p style="margin-top:10px;">We use Google Sign-In solely for identity verification. Please review <a href="https://policies.google.com/privacy" target="_blank">Google's Privacy Policy</a> for details on how they process your data.</p>
+        <h3>5.2 — Advertising Services</h3>
+        <span class="partner-chip chip-teal">Unity Ads</span>
+        <span class="partner-chip chip-gold">Google AdMob</span>
+        <p style="margin-top:10px;">We use these networks to display ads within the app. They may collect the advertising ID and device information to serve relevant ads.</p>
+        <div class="info-box red">
+          <span>We do not sell your data to any third party, nor do we share it with any entity beyond those mentioned above.</span>
+        </div>
+      </div>
+    </div>
+    </div>
+
+
+    <!-- ── Section 5b: Firebase ── -->
+    <div id="en-5b">
+    <div class="section-card" style="--accent-color: var(--orange);">
+      <div class="card-body">
+        <div class="section-header">
+          <div class="section-icon-wrap ic-orange"></div>
+          <div class="section-meta">
+            <div class="section-num">SECTION 05B // FIREBASE</div>
+            <div class="section-title">Firebase Services</div>
+          </div>
+        </div>
+        <p>We use a suite of Firebase services provided by Google strictly for <strong>analytics, performance, and notifications</strong> — not for storing game data (which lives in Supabase).</p>
+
+        <h3>Firebase Analytics</h3>
+        <p>Tracks gameplay events and user behavior to help us understand and improve how the app is used. This data is not used for personalized advertising.</p>
+
+        <h3>Firebase Crashlytics</h3>
+        <p>Automatically monitors crashes and technical errors to ensure app stability and enable quick fixes.</p>
+
+        <h3>Firebase Cloud Messaging</h3>
+        <p>Delivers in-game push notifications such as daily streak reminders and update alerts.</p>
+
+        <h3>Firebase Remote Config</h3>
+        <p>Allows us to adjust app settings and content remotely without requiring a full app update.</p>
+
+        <div class="info-box cyan">
+          <span>All Firebase services are subject to Google's privacy policy. For more details: <a href="https://firebase.google.com/support/privacy" target="_blank">Firebase Privacy Policy</a></span>
+        </div>
+      </div>
+    </div>
+    </div>
+
+    <!-- ── Section 6 ── -->
+    <div id="en-6">
+    <div class="section-card" style="--accent-color: var(--green);">
+      <div class="card-body">
+        <div class="section-header">
+          <div class="section-icon-wrap ic-green"></div>
+          <div class="section-meta">
+            <div class="section-num">SECTION 06 // SECURITY</div>
+            <div class="section-title">Data Security</div>
+          </div>
+        </div>
+        <p>We take reasonable security measures to protect your data, including:</p>
+        <ul class="data-list">
+          <li>Data encryption during transmission via HTTPS</li>
+          <li>Strict access control to data</li>
+          <li>Regular security policy and procedure reviews</li>
+          <li>Database protection with strict server-side security rules</li>
+        </ul>
+        <div class="info-box amber">
+          <span>No system can guarantee absolute security of data transmitted over the internet. We do our best to protect your data, but complete security cannot be fully guaranteed.</span>
+        </div>
+      </div>
+    </div>
+    </div>
+
+    <!-- ── Section 7 ── -->
+    <div id="en-7">
+    <div class="section-card" style="--accent-color: var(--magenta);">
+      <div class="card-body">
+        <div class="section-header">
+          <div class="section-icon-wrap ic-magenta"></div>
+          <div class="section-meta">
+            <div class="section-num">SECTION 07 // RIGHTS</div>
+            <div class="section-title">Your Rights</div>
+          </div>
+        </div>
+        <p>You have the following rights regarding your data:</p>
+        <div class="rights-grid">
+          <div class="right-card">
+            
+            <div class="right-card-title">Right to Access</div>
+            <div class="right-card-desc">You can view data associated with your account via app settings or by contacting us.</div>
+          </div>
+          <div class="right-card">
+            
+            <div class="right-card-title">Right to Correction</div>
+            <div class="right-card-desc">You can update your profile information at any time through the Settings page in the app.</div>
+          </div>
+          <div class="right-card">
+            
+            <div class="right-card-title">Right to Deletion</div>
+            <div class="right-card-desc">You can permanently delete your account and all data using the "Delete Account" button in Settings.</div>
+          </div>
+          <div class="right-card">
+            
+            <div class="right-card-title">Ad Tracking Opt-Out</div>
+            <div class="right-card-desc">You can opt out of personalized ad tracking from your Android device's Privacy settings.</div>
+          </div>
+        </div>
+        <div class="info-box cyan" style="margin-top:16px;">
+          <span>To exercise any of these rights or to request a copy of your data, contact us at: <strong>mustfim11@gmail.com</strong></span>
+        </div>
+      </div>
+    </div>
+    </div>
+
+    <!-- ── Section 8 ── -->
+    <div id="en-8">
+    <div class="section-card" style="--accent-color: var(--gold);">
+      <div class="card-body">
+        <div class="section-header">
+          <div class="section-icon-wrap ic-gold"></div>
+          <div class="section-meta">
+            <div class="section-num">SECTION 08 // CHILDREN</div>
+            <div class="section-title">Children's Privacy</div>
+          </div>
+        </div>
+        <p>The app is designed for children and teenagers starting from age <strong>10</strong>. We take children's privacy seriously and commit to the following:</p>
+        <ul class="data-list">
+          <li>We only collect the minimum data necessary for an age-appropriate gaming experience</li>
+          <li>We do not collect location data or sensitive information</li>
+          <li>We do not provide any in-app communication or chat between users</li>
+          <li>Ad content is filtered to be age-appropriate for each age group</li>
+          <li>We do not use children's data for marketing purposes</li>
+        </ul>
+        <div class="info-box amber">
+          <span>If you are a parent or guardian and believe your child has submitted data without your consent, please contact us immediately at <strong>mustfim11@gmail.com</strong> and we will take appropriate action.</span>
+        </div>
+      </div>
+    </div>
+    </div>
+
+    <!-- ── Section 9 ── -->
+    <div id="en-9">
+    <div class="section-card" style="--accent-color: var(--orange);">
+      <div class="card-body">
+        <div class="section-header">
+          <div class="section-icon-wrap ic-orange"></div>
+          <div class="section-meta">
+            <div class="section-num">SECTION 09 // ADS</div>
+            <div class="section-title">Advertising</div>
+          </div>
+        </div>
+        <p>The app relies on advertising to offer its service for free. Ads are managed via Unity Ads and Google AdMob.</p>
+        <ul class="data-list">
+          <li>Ad networks may use your device's Advertising ID to serve ads relevant to your interests</li>
+          <li>You can reset or disable your Advertising ID from your device's Google settings</li>
+          <li>For children under 13: only privacy-respecting, non-personalized ads are served</li>
+        </ul>
+        <div class="info-box cyan">
+          <span>Learn more: <a href="https://policies.google.com/privacy" target="_blank">Google Privacy Policy</a> | <a href="https://unity.com/legal/privacy-policy" target="_blank">Unity Ads Privacy Policy</a></span>
+        </div>
+      </div>
+    </div>
+    </div>
+
+    <!-- ── Section 10 ── -->
+    <div id="en-10">
+    <div class="section-card" style="--accent-color: var(--teal);">
+      <div class="card-body">
+        <div class="section-header">
+          <div class="section-icon-wrap ic-teal"></div>
+          <div class="section-meta">
+            <div class="section-num">SECTION 10 // UPDATES</div>
+            <div class="section-title">Changes to This Policy</div>
+          </div>
+        </div>
+        <p>We may update this policy from time to time. When significant changes are made:</p>
+        <ul class="data-list">
+          <li>You will be notified via an in-app notification</li>
+          <li>The "Last Updated" date at the top of this page will be revised</li>
+          <li>Continued use of the app after notification constitutes acceptance of the changes</li>
+        </ul>
+      </div>
+    </div>
+    </div>
+
+    <!-- ── Section 11 ── -->
+    <div id="en-11">
+    <div class="contact-card">
+      <div class="contact-section-header">
+        <div class="section-icon-wrap ic-cyan"></div>
+        <div class="section-meta">
+          <div class="section-num" style="color:rgba(0,245,255,0.4);">SECTION 11 // CONTACT</div>
+          <div class="section-title">Contact Us</div>
+        </div>
+      </div>
+      <p>If you have any questions or concerns about this policy or your data, we welcome you to contact us at any time:</p>
+      <a href="mailto:mustfim11@gmail.com" class="email-link">mustfim11@gmail.com</a>
+      <p style="margin-top:16px; font-size:0.82rem; color:rgba(122,156,192,0.7);">We are committed to responding to all inquiries within <strong style="color:var(--cyan);">30 days</strong> of receipt.</p>
+    </div>
+    </div>
+
+  </div><!-- end #en-content -->
+
+  <div class="footer">
+    © 2026 <span>تحدي الـ60 ثانية</span> &nbsp;·&nbsp; <span>60 SECOND CHALLENGE</span> &nbsp;·&nbsp; ALL RIGHTS RESERVED
+  </div>
+
+</div><!-- end .main -->
+
+<script>
+function showArabic() {
+  document.getElementById('ar-content').style.display = 'block';
+  document.getElementById('en-content').style.display = 'none';
+  document.getElementById('ar-btn').className = 'lang-btn active';
+  document.getElementById('en-btn').className = 'lang-btn inactive';
+  document.documentElement.lang = 'ar';
+  document.documentElement.dir = 'rtl';
+  document.getElementById('main-title').innerHTML = 'سياسة الخصوصية<br><span>تحدي الـ60 ثانية</span>';
+  document.getElementById('main-subtitle').textContent = 'نحن نحترم بياناتك ونلتزم بحمايتها';
+  document.getElementById('main-badge').textContent = 'آخر تحديث: مايو 2026';
+}
+
+function showEnglish() {
+  document.getElementById('ar-content').style.display = 'none';
+  document.getElementById('en-content').style.display = 'block';
+  document.getElementById('ar-btn').className = 'lang-btn inactive';
+  document.getElementById('en-btn').className = 'lang-btn active';
+  document.documentElement.lang = 'en';
+  document.documentElement.dir = 'ltr';
+  document.getElementById('main-title').innerHTML = 'Privacy Policy<br><span>challenge 60s</span>';
+  document.getElementById('main-subtitle').textContent = 'We respect your data and are committed to protecting it';
+  document.getElementById('main-badge').textContent = 'Last Updated: May 2026';
+}
+
+// Intersection observer for subtle reveal
+if ('IntersectionObserver' in window) {
+  const cards = document.querySelectorAll('.section-card');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.05 });
+  cards.forEach(c => io.observe(c));
+}
+</script>
+</body>
+</html>
